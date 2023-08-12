@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Gioco da Matrimonio - Upload Foto</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container-fluid p-0">
+        <div class="row no-gutters">
+            <div class="col-md-6 offset-md-3 mt-5">
+                <div class="parchment-bg">
+                    <h1 class="text-center mb-4">Benvenuto al Gioco da Matrimonio!</h1>
+                    <p class="text-center">Fotografa gli obiettivi elencati qui di seguito:</p>
+                    <div class="row no-gutters">
+                        <div class="col-md-6" id="left-column">
+                            <ul class="list-group objectives-column" id="left-objectives">
+                                <!-- Prima metà degli obiettivi -->
+                            </ul>
+                        </div>
+                        <div class="col-md-6" id="right-column">
+                            <ul class="list-group objectives-column" id="right-objectives">
+                                <!-- Seconda metà degli obiettivi -->
+                            </ul>
+                        </div>
+                    </div>
+                    <form id="upload-form" class="mt-4">
+                        <div class="form-group">
+                            <label for="name">Nome:</label>
+                            <input type="text" class="form-control" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="tableName">Nome Tavolo:</label>
+                            <input type="text" class="form-control" id="tableName" name="tableName" required>
+                        </div>
+                        <button type="button" class="btn btn-primary" onclick="uploadPhotos()" disabled>Carica Foto e Invia Email</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <video id="video" style="display: none;"></video>
+    <canvas id="canvas" style="display: none;"></canvas>
+
+    <script>
+        const objectives = [
+            "Obiettivo 1",
+            "Obiettivo 2",
+            "Obiettivo 3",
+            "Obiettivo 1",
+            "Obiettivo 2",
+            "Obiettivo 3",
+            // Aggiungi altri obiettivi qui
+        ];
+        const photos = {};
+
+        function generateObjectivesList() {
+            const leftColumn = document.getElementById('left-objectives');
+            const rightColumn = document.getElementById('right-objectives');
+            const objectivesCount = objectives.length;
+
+            for (let i = 0; i < objectivesCount; i++) {
+                const objective = objectives[i];
+                const listItem = document.createElement('li');
+                listItem.classList.add('list-group-item');
+                listItem.innerHTML = `
+                    <button class="btn btn-primary" onclick="takePhoto('${objective}')">${objective}</button>
+                    <div id="${objective}" style="display: none;"></div>
+                    <input type="file" id="${objective}" name="photos_${objective}" accept="image/*" style="display: none;" capture="camera">
+                `;
+
+                if (i < objectivesCount / 2) {
+                    leftColumn.appendChild(listItem);
+                } else {
+                    rightColumn.appendChild(listItem);
+                }
+            }
+        }
+
+        generateObjectivesList();
+
+        async function takePhoto(objective) {
+            console.log('Avvio della funzione takePhoto...');
+            const constraints = {
+                video: { facingMode: 'environment' },
+            };
+
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia(constraints);
+                const videoElement = document.getElementById('video');
+                videoElement.srcObject = stream;
+                videoElement.play();
+
+                videoElement.onloadedmetadata = () => {
+                    console.log('Fotocamera attivata con successo.');
+                    const canvasElement = document.getElementById('canvas');
+                    const context = canvasElement.getContext('2d');
+
+                    canvasElement.width = videoElement.videoWidth;
+                    canvasElement.height = videoElement.videoHeight;
+
+                    context.drawImage(videoElement, 0, 0, canvasElement.width, canvasElement.height);
+                    stream.getTracks().forEach(track => track.stop());
+
+                    const photo = canvasElement.toDataURL('image/jpeg', 1.0);
+                    photos[objective] = photo;
+                    console.log(`Foto scattata per l'obiettivo: ${objective}`);
+                    console.log('Foto salvata in photos:', photos);
+
+                    const allPhotosTaken = Object.keys(photos).length === objectives.length;
+                    const uploadBtn = document.querySelector('button[type="button"]');
+                    uploadBtn.disabled = !allPhotosTaken;
+
+                    const objectiveDiv = document.getElementById(objective);
+                    objectiveDiv.innerHTML = `<img src="${photo}" alt="${objective}" style="width: 150px; height: 150px;">`;
+                    const takePhotoBtn = objectiveDiv.previousElementSibling;
+                    takePhotoBtn.style.display = 'none';
+
+                    const fileInput = document.getElementById(objective);
+                    fileInput.style.display = 'block';
+                };
+            } catch (error) {
+                console.error('Errore nell\'acquisizione della fotocamera:', error);
+            }
+        }
+
+        function uploadPhotos() {
+            const formData = new FormData(document.getElementById('upload-form'));
+
+            for (const objective in photos) {
+                const photo = dataURItoBlob(photos[objective]);
+                formData.append(`${objective}-file`, photo, `${objective}.jpg`);
+            }
+
+            fetch('/upload', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(message => {
+                alert(message);
+                document.getElementById('upload-form').reset();
+                photos = {};
+                const uploadBtn = document.querySelector('input[type="button"]');
+                uploadBtn.disabled = true;
+                const objectivesList = document.getElementById('objectives-list');
+                objectivesList.querySelectorAll('button').forEach(button => button.style.display = 'inline-block');
+                objectivesList.querySelectorAll('div').forEach(div => div.innerHTML = '');
+                objectivesList.querySelectorAll('input[type="file"]').forEach(input => input.style.display = 'none');
+            })
+            .catch(error => console.error('Errore durante il caricamento:', error));
+        }
+
+        function dataURItoBlob(dataURI) {
+            const byteString = atob(dataURI.split(',')[1]);
+            const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+            const ab = new ArrayBuffer(byteString.length);
+            const ia = new Uint8Array(ab);
+            for (let i = 0; i < byteString.length; i++) {
+                ia[i] = byteString.charCodeAt(i);
+            }
+            return new Blob([ab], { type: mimeString });
+        }
+    </script>
+</body>
+</html>
