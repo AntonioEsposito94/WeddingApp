@@ -81,7 +81,7 @@
 
         generateObjectivesList();
 
-        async function takePhoto(objective) {
+		async function takePhoto(objective) {
 			console.log('Avvio della funzione takePhoto...');
 			const constraints = {
 				video: { facingMode: 'environment' },
@@ -104,27 +104,21 @@
 					context.drawImage(videoElement, 0, 0, canvasElement.width, canvasElement.height);
 					stream.getTracks().forEach(track => track.stop());
 
+					const photo = canvasElement.toDataURL('image/jpeg', 1.0);
+					photos[objective] = photo;
+					console.log(`Foto scattata per l'obiettivo: ${objective}`);
+					console.log('Foto salvata in photos:', photos);
+
+					const allPhotosTaken = Object.keys(photos).length === objectives.length;
+					const uploadBtn = document.querySelector('button[type="button"]');
+					uploadBtn.disabled = !allPhotosTaken;
+
+					const objectiveDiv = document.getElementById(objective);
+					objectiveDiv.innerHTML = `<img src="${photo}" alt="${objective}" style="width: 150px; height: 150px;">`;
 					const takePhotoBtn = objectiveDiv.previousElementSibling;
 					takePhotoBtn.style.display = 'none';
-
 					const fileInput = document.getElementById(objective);
 					fileInput.style.display = 'block';
-
-					// Aggiungi un ritardo di 3 secondi prima di scattare la foto
-					setTimeout(() => {
-						const photo = canvasElement.toDataURL('image/jpeg', 1.0);
-						photos[objective] = photo;
-						console.log(`Foto scattata per l'obiettivo: ${objective}`);
-						console.log('Foto salvata in photos:', photos);
-
-						const allPhotosTaken = Object.keys(photos).length === objectives.length;
-						const uploadBtn = document.querySelector('button[type="button"]');
-						uploadBtn.disabled = !allPhotosTaken;
-
-						const objectiveDiv = document.getElementById(objective);
-						objectiveDiv.innerHTML = `<img src="${photo}" alt="${objective}" style="width: 150px; height: 150px;">`;
-						fileInput.style.display = 'none';
-					}, 3000); // Ritardo di 3000 millisecondi (3 secondi)
 				};
 			} catch (error) {
 				console.error('Errore nell\'acquisizione della fotocamera:', error);
