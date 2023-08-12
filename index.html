@@ -140,33 +140,32 @@
 				document.body.removeChild(videoElement);
 			}
 		}
-		
-        function uploadPhotos() {
-            const formData = new FormData(document.getElementById('upload-form'));
 
-            for (const objective in photos) {
-                const photo = dataURItoBlob(photos[objective]);
-                formData.append(`${objective}-file`, photo, `${objective}.jpg`);
-            }
+		function uploadPhotos() {
+			const formData = new FormData();
 
-            fetch('/upload', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.text())
-            .then(message => {
-                alert(message);
-                document.getElementById('upload-form').reset();
-                photos = {};
-                const uploadBtn = document.querySelector('input[type="button"]');
-                uploadBtn.disabled = true;
-                const objectivesList = document.getElementById('objectives-list');
-                objectivesList.querySelectorAll('button').forEach(button => button.style.display = 'inline-block');
-                objectivesList.querySelectorAll('div').forEach(div => div.innerHTML = '');
-                objectivesList.querySelectorAll('input[type="file"]').forEach(input => input.style.display = 'none');
-            })
-            .catch(error => console.error('Errore durante il caricamento:', error));
-        }
+			for (const objective in photos) {
+				const photo = dataURItoBlob(photos[objective]);
+				formData.append(`photos_${objective}`, photo, `${objective}.jpg`);
+			}
+
+			fetch('/upload', {
+				method: 'POST',
+				body: formData
+			})
+			.then(response => response.text())
+			.then(message => {
+				alert(message);
+				document.getElementById('upload-form').reset();
+				photos = {};
+				const uploadBtn = document.querySelector('button[type="button"]');
+				uploadBtn.disabled = true;
+				const objectivesList = document.getElementById('objectives-list');
+				objectivesList.querySelectorAll('button').forEach(button => button.style.display = 'inline-block');
+				objectivesList.querySelectorAll('div').forEach(div => div.innerHTML = '');
+			})
+			.catch(error => console.error('Errore durante il caricamento:', error));
+		}
 
         function dataURItoBlob(dataURI) {
             const byteString = atob(dataURI.split(',')[1]);
