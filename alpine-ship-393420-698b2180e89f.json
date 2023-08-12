@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "alpine-ship-393420",
+  "private_key_id": "698b2180e89f1f00d37daf91e8098b5aa83cf7fc",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCv73C/jeYLyrlZ\nDKQtDrzWaSXy5a5R3iPRBz5R2w4MGaXzarM4ozOiUXUuBHG9WSCtvJysvZ8JhyWi\nuhsOCbwmtPi/lLGyTnpy4Y74G8+XENt5w7KGPCCa6CP39AZqlONRkgC84QBgj2NL\nvAv5Poaan3J1YJCVqSRRSQ/n8hx+qhRfeaoRXhZuEJIPTx9KbKHh30WWq1HXzxrR\nt+ExD6XkmIEnETomps/w4p+r4gCckX8xOcmAuaBDq0/Gjw4Vj5fgS+RscfO1z+bM\n/7HjI+rdAsCNSi8yxfxzxt4FQWcU6rrzK6LgX5PQ01JdlT3aYyQlBIf/x3UuNC99\nj4as9HmjAgMBAAECggEAMyacUzUAQ0Fnbfp86RS11mivvdUFP4wkQaundMkJZn82\nfnTxMnBQnMquFPj50KFPHPQPYTGoQW7nhE4ze3tdFqva/mhO2ZZzh18I4B3F1xfx\nl49MIjbtC9yeSILMMsSi6p5WVJPeNjS6G9TKbma9X8snzfSLVNfeVTu2wirkGfcB\nmLMjui7Qm+w7bbIs+kMaVD47nLKO8fMC+LRXifxRDffU08Zf7yuVOQTreSY57Xqz\nmV6wMSAcnnu2NSMDJb2FLJnBo6l2zMQVSXidpei4dgAASxyVstEJ9NudZAul/vV8\nLLdQnNndZxTvUh0hSEHBxOWKO5jnGPKAsw4KwCUPgQKBgQDV5MxZcc5U77k0llR3\nKI3Aq4ZPQs9Ne2Vl0EofaZ35jYL1tgmqwjBGUKMN3zXNL8WeAkP2+RPPbn5LfCH5\nFuN2UxZMpyOmdS4JLBr/XbTOKN6MUCKeaZsTEjDSQ1VmMcSE59GfqU3NXiPcvT9D\nikfNIij186z9g6GdP0ibnsl8QwKBgQDSkbjxwDq5sOa0KM0ntb2bAdWC4JSgJveS\n1Fkyhn+vlnYAOmlY/BpB31AI6u71+ZeMG+DC65qPa7PmXzU2oI+pkisAoRGl0PHO\nZgwTP/DQPvpIByHN5gRlJoCnPNe9/0pInAgsKg61X0eto2ShbpCGIlU6KfEaiI8p\n1BmJIonnIQKBgEiVvEMeO8bXEyKlYUSOnowjqRB8u5yvo1lJtd2zGcj2HNsFS4KH\nI5q5ApxSgw9+hrF4U1gcbnyWIoW7OkwtWENvLsIUdiSm31h9fyvpwNG1TNCQ4S6g\n598w7SBteS2U9fukL57e9Wgb6k+eaTmiU3tpfDz61FmzscSLFTi6SeXBAoGBAJpY\nYj4h72nJN3H7LlXbK34BXCWwxICXz4T6zd7xI4rrONd1+V5WfFCohZvjyQDX0LPM\ng3WdCQ/znExSoUjHbEaZc5fkeHEYtQXbWyKJDdU3NHGzeJ3Z6oLSNB9hw6nrBOIw\nLPViZqGfk4S9bbe+uYT4iYw2zhnq2zWH2Kfifz7BAoGBAL1XP/tu92dP3gISrSig\nPW5VTK+FVaXtqsbJQT+SeoXVIm72NdsQtgsh27fnowgatzI7CHAIX+Q8nP6DFgo3\nzFXErjLMVSkxdUEZ1ouLvFB8y5iS2+VXPG3FMXU0yjax8w6teDt47wZ+v+5l2euy\nxxsOabFRJTsoszHMgEsmSQZC\n-----END PRIVATE KEY-----\n",
+  "client_email": "antonio@alpine-ship-393420.iam.gserviceaccount.com",
+  "client_id": "109250231092014111927",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/antonio%40alpine-ship-393420.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

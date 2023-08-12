@@ -1,0 +1,47 @@
+body {
+    background-image: url("background.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    font-family: 'Dancing Script', cursive;
+}
+
+.container {
+    background-color: transparent;
+    border: none;
+    padding: 20px;
+    max-width: 600px;
+    margin: 50px auto;
+    text-align: center;
+    position: relative;
+}
+
+#objectives-list .list-group-item {
+    background-color: transparent;
+    border-color: transparent;
+    color: black; /* Colore del testo del bottone */
+    padding: 20px;
+}
+
+#objectives-list .list-group-item:hover {
+    background-color: transparent;
+    border: none;
+}
+
+#objectives-list .btn {
+    background-color: transparent;
+    border-color: transparent;
+    color: black; /* Colore del testo del bottone */
+    transition: background-color 0.3s; /* Aggiungi una transizione per una transizione più fluida */
+}
+
+/* Aggiungi uno stile hover per il bottone */
+.btn-primary:hover {
+    background-color: transparent;
+    border-color: transparent;
+    color: black; /* Mantieni il colore del testo nero al passaggio del mouse */
+}
+
+#upload-form .btn {
+    font-family: 'Dancing Script', cursive;
+}
