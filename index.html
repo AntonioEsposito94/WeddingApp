@@ -86,12 +86,17 @@
 			const takePhotoBtn = document.getElementById(objective);
 			takePhotoBtn.style.display = 'none';
 
+			const constraints = {
+				video: { facingMode: 'environment' }
+			};
+
 			const videoElement = document.createElement('video');
 			videoElement.style.display = 'block';
+			videoElement.style.margin = 'auto';
 			document.body.appendChild(videoElement);
 
 			try {
-				const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+				const stream = await navigator.mediaDevices.getUserMedia(constraints);
 				videoElement.srcObject = stream;
 				await videoElement.play();
 
@@ -132,7 +137,6 @@
 				document.body.removeChild(videoElement);
 			}
 		}
-
         function uploadPhotos() {
             const formData = new FormData(document.getElementById('upload-form'));
 
