@@ -111,7 +111,7 @@
 				captureBtn.textContent = 'Scatta Foto';
 				document.body.appendChild(captureBtn);
 
-				captureBtn.addEventListener('click', () => {
+				captureBtn.addEventListener('click', async () => {
 					context.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
 					const photo = canvas.toDataURL('image/jpeg');
 					photos[objective] = photo;
@@ -131,12 +131,16 @@
 					document.body.removeChild(canvas);
 					document.body.removeChild(captureBtn);
 				});
+
+				const uploadBtn = document.querySelector('button[type="button"]');
+				uploadBtn.disabled = true; // Disabilita il pulsante di upload finché non sono state scattate le foto
 			} catch (error) {
 				console.error('Errore nell\'acquisizione della fotocamera:', error);
 				// Clean up in case of error
 				document.body.removeChild(videoElement);
 			}
 		}
+		
         function uploadPhotos() {
             const formData = new FormData(document.getElementById('upload-form'));
 
