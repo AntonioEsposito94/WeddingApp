@@ -148,38 +148,23 @@
 				const photo = dataURItoBlob(photos[objective]);
 				formData.append(`photos_${objective}`, photo, `${objective}.jpg`);
 			}
-            const nodemailer = require('nodemailer');
 
-            // Configura il trasportatore per l'invio email
-            const transporter = nodemailer.createTransport({
-                service: 'gmail',
-                auth: {
-                user: 'espositoant1994@gmail.com',
-                pass: 'zzqkjeipcokmctpv'
-                }
-            });
-
-            // Definisci i dettagli dell'email
-            const mailOptions = {
-              from: 'espositoant1994@gmail.com',
-              to: 'espositoant1994@gmail.com',
-              subject: 'Test',
-              text: 'Test',
-              attachments: [
-                {
-                  filename: formData,
-                }
-              ]
-            };
-
-            // Invia l'email
-            transporter.sendMail(mailOptions, (error, info) => {
-              if (error) {
-                console.error('Errore nell\'invio dell\'email:', error);
-              } else {
-                console.log('Email inviata:', info.response);
-              }
-            });
+			fetch('/upload', {
+				method: 'POST',
+				body: formData
+			})
+			.then(response => response.text())
+			.then(message => {
+				alert(message);
+				document.getElementById('upload-form').reset();
+				photos = {};
+				const uploadBtn = document.querySelector('button[type="button"]');
+				uploadBtn.disabled = true;
+				const objectivesList = document.getElementById('objectives-list');
+				objectivesList.querySelectorAll('button').forEach(button => button.style.display = 'inline-block');
+				objectivesList.querySelectorAll('div').forEach(div => div.innerHTML = '');
+			})
+			.catch(error => console.error('Errore durante il caricamento:', error));
 		}
 
         function dataURItoBlob(dataURI) {
