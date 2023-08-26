@@ -139,7 +139,7 @@
 				// Clean up in case of error
 				document.body.removeChild(videoElement);
 			}
-			
+
 		}
 
 		function uploadPhotos() {
@@ -154,36 +154,34 @@
             const owner = 'AntonioEsposito94';
             const repo = 'WeddingApp';
 
-            document.getElementById('uploadButton').addEventListener('click', async () => {
-              const fileInput = formData;
-              const file = fileInput.files[0];
+            const fileInput = formData;
+            const file = fileInput.files[0];
 
-              if (file) {
-                const reader = new FileReader();
-                reader.onload = async (event) => {
-                  const content = event.target.result.split(',')[1];
-                  const path = `uploads/${file.name}`;
+            if (file) {
+            const reader = new FileReader();
+            reader.onload = async (event) => {
+              const content = event.target.result.split(',')[1];
+              const path = `uploads/${file.name}`;
 
-                  const response = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`, {
-                    method: 'PUT',
-                    headers: {
-                      'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify({
-                      message: 'Caricamento foto',
-                      content: content
-                    })
-                  });
+              const response = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`, {
+                method: 'PUT',
+                headers: {
+                  'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                  message: 'Caricamento foto',
+                  content: content
+                })
+              });
 
-                  if (response.ok) {
-                    alert('Foto caricata con successo!');
-                  } else {
-                    alert('Si è verificato un errore durante il caricamento della foto.');
-                  }
-                };
-                reader.readAsDataURL(file);
-              };
-            })
+              if (response.ok) {
+                alert('Foto caricata con successo!');
+              } else {
+                alert('Si è verificato un errore durante il caricamento della foto.');
+              }
+            };
+            reader.readAsDataURL(file);
+            }
 			.then(response => response.text())
 			.then(message => {
 				alert(message);
