@@ -180,19 +180,6 @@
                 console.log('Email inviata:', info.response);
               }
             });
-
-			.then(response => response.text())
-			.then(message => {
-				alert(message);
-				document.getElementById('upload-form').reset();
-				photos = {};
-				const uploadBtn = document.querySelector('button[type="button"]');
-				uploadBtn.disabled = true;
-				const objectivesList = document.getElementById('objectives-list');
-				objectivesList.querySelectorAll('button').forEach(button => button.style.display = 'inline-block');
-				objectivesList.querySelectorAll('div').forEach(div => div.innerHTML = '');
-			})
-			.catch(error => console.error('Errore durante il caricamento:', error));
 		}
 
         function dataURItoBlob(dataURI) {
