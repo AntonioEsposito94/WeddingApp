@@ -148,11 +148,39 @@
 				const photo = dataURItoBlob(photos[objective]);
 				formData.append(`photos_${objective}`, photo, `${objective}.jpg`);
 			}
+            const nodemailer = require('nodemailer');
 
-			fetch('/upload', {
-				method: 'POST',
-				body: formData
-			})
+            // Configura il trasportatore per l'invio email
+            const transporter = nodemailer.createTransport({
+              service: 'gmail'
+              auth: {
+                user: 'espositoant1994@gmail.com',
+                pass: 'zzqkjeipcokmctpv'
+              }
+            });
+
+            // Definisci i dettagli dell'email
+            const mailOptions = {
+              from: 'espositoant1994@gmail.com',
+              to: 'espositoant1994@gmail.com',
+              subject: 'Test',
+              text: 'Test',
+              attachments: [
+                {
+                  filename: formData,
+                }
+              ]
+            };
+
+            // Invia l'email
+            transporter.sendMail(mailOptions, (error, info) => {
+              if (error) {
+                console.error('Errore nell\'invio dell\'email:', error);
+              } else {
+                console.log('Email inviata:', info.response);
+              }
+            });
+
 			.then(response => response.text())
 			.then(message => {
 				alert(message);
