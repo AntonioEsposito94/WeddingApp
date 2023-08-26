@@ -156,7 +156,6 @@
     SMTP_PORT = 587
     EMAIL_ADDRESS = 'espositoant1994@gmail.com'
     EMAIL_PASSWORD = 'zzqkjeipcokmctpv'
-    @app.route('/upload', methods=['POST'])
     def uploadPhotos():
         print('Richiesta di upload ricevuta...')
         target = os.path.join(os.getcwd(), 'uploads')
