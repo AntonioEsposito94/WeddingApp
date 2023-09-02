@@ -54,7 +54,7 @@
             "Obiettivo 6",
             // Aggiungi altri obiettivi qui
         ];
-        const photos = {};
+        let photos = {}; // Cambiato il tipo da const a let
 
         function generateObjectivesList() {
             const leftColumn = document.getElementById('left-objectives');
@@ -81,91 +81,91 @@
 
         generateObjectivesList();
 
-		async function takePhoto(objective) {
-			console.log(`Premuto il bottone per l'obiettivo: ${objective}`);
-			const takePhotoBtn = document.getElementById(objective);
-			takePhotoBtn.style.display = 'none';
+        async function takePhoto(objective) {
+            console.log(`Premuto il bottone per l'obiettivo: ${objective}`);
+            const takePhotoBtn = document.getElementById(objective);
+            takePhotoBtn.style.display = 'none';
 
-			const constraints = {
-				video: { facingMode: 'environment' }
-			};
+            const constraints = {
+                video: { facingMode: 'environment' }
+            };
 
-			const videoElement = document.createElement('video');
-			videoElement.style.display = 'block';
-			videoElement.style.margin = 'auto';
-			document.body.appendChild(videoElement);
+            const videoElement = document.createElement('video');
+            videoElement.style.display = 'block';
+            videoElement.style.margin = 'auto';
+            document.body.appendChild(videoElement);
 
-			try {
-				const stream = await navigator.mediaDevices.getUserMedia(constraints);
-				videoElement.srcObject = stream;
-				await videoElement.play();
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia(constraints);
+                videoElement.srcObject = stream;
+                await videoElement.play();
 
-				const canvas = document.createElement('canvas');
-				canvas.style.display = 'none';
-				document.body.appendChild(canvas);
-				const context = canvas.getContext('2d');
-				canvas.width = videoElement.videoWidth;
-				canvas.height = videoElement.videoHeight;
+                const canvas = document.createElement('canvas');
+                canvas.style.display = 'none';
+                document.body.appendChild(canvas);
+                const context = canvas.getContext('2d');
+                canvas.width = videoElement.videoWidth;
+                canvas.height = videoElement.videoHeight;
 
-				const captureBtn = document.createElement('button');
-				captureBtn.textContent = 'Scatta Foto';
-				document.body.appendChild(captureBtn);
+                const captureBtn = document.createElement('button');
+                captureBtn.textContent = 'Scatta Foto';
+                document.body.appendChild(captureBtn);
 
-				captureBtn.addEventListener('click', async () => {
-					context.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
-					const photo = canvas.toDataURL('image/jpeg');
-					photos[objective] = photo;
-					console.log(`Foto scattata per l'obiettivo: ${objective}`);
-					console.log('Foto salvata in photos:', photos);
+                captureBtn.addEventListener('click', async () => {
+                    context.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+                    const photo = canvas.toDataURL('image/jpeg');
+                    photos[objective] = photo;
+                    console.log(`Foto scattata per l'obiettivo: ${objective}`);
+                    console.log('Foto salvata in photos:', photos);
 
-					const allPhotosTaken = Object.keys(photos).length === objectives.length;
-					const uploadBtn = document.querySelector('button[type="button"]');
-					uploadBtn.disabled = !allPhotosTaken;
+                    const allPhotosTaken = Object.keys(photos).length === objectives.length;
+                    const uploadBtn = document.querySelector('button[type="button"]');
+                    uploadBtn.disabled = !allPhotosTaken;
 
-					const objectiveDiv = document.getElementById(objective);
-					objectiveDiv.innerHTML = `<img src="${photo}" alt="${objective}" style="width: 150px; height: 150px;">`;
+                    const objectiveDiv = document.getElementById(objective);
+                    objectiveDiv.innerHTML = `<img src="${photo}" alt="${objective}" style="width: 150px; height: 150px;">`;
 
-					// Clean up
-					videoElement.srcObject.getTracks().forEach(track => track.stop());
-					document.body.removeChild(videoElement);
-					document.body.removeChild(canvas);
-					document.body.removeChild(captureBtn);
-				});
+                    // Clean up
+                    videoElement.srcObject.getTracks().forEach(track => track.stop());
+                    document.body.removeChild(videoElement);
+                    document.body.removeChild(canvas);
+                    document.body.removeChild(captureBtn);
+                });
 
-				const uploadBtn = document.querySelector('button[type="button"]');
-				uploadBtn.disabled = true; // Disabilita il pulsante di upload finché non sono state scattate le foto
-			} catch (error) {
-				console.error('Errore nell\'acquisizione della fotocamera:', error);
-				// Clean up in case of error
-				document.body.removeChild(videoElement);
-			}oldFetch.apply(this, [request])
-		}
+                const uploadBtn = document.querySelector('button[type="button"]');
+                uploadBtn.disabled = true; // Disabilita il pulsante di upload finché non sono state scattate le foto
+            } catch (error) {
+                console.error('Errore nell\'acquisizione della fotocamera:', error);
+                // Clean up in case of error
+                document.body.removeChild(videoElement);
+            }
+        }
 
-		function uploadPhotos() {
-			const formData = new FormData();
+        function uploadPhotos() {
+            const formData = new FormData();
 
-			for (const objective in photos) {
-				const photo = dataURItoBlob(photos[objective]);
-				formData.append(`photos_${objective}`, photo, `${objective}.jpg`);
-			}
+            for (const objective in photos) {
+                const photo = dataURItoBlob(photos[objective]);
+                formData.append(`photos_${objective}`, photo, `${objective}.jpg`);
+            }
 
-			fetch('/upload', {
-				method: 'POST',
-				body: formData
-			})
-			.then(response => response.text())
-			.then(message => {
-				alert(message);
-				document.getElementById('upload-form').reset();
-				photos = {};
-				const uploadBtn = document.querySelector('button[type="button"]');
-				uploadBtn.disabled = true;
-				const objectivesList = document.getElementById('objectives-list');
-				objectivesList.querySelectorAll('button').forEach(button => button.style.display = 'inline-block');
-				objectivesList.querySelectorAll('div').forEach(div => div.innerHTML = '');
-			})
-			.catch(error => console.error('Errore durante il caricamento:', error));
-		}
+            fetch('/upload', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(message => {
+                alert(message);
+                document.getElementById('upload-form').reset();
+                photos = {};
+                const uploadBtn = document.querySelector('button[type="button"]');
+                uploadBtn.disabled = true;
+                const objectivesList = document.getElementById('objectives-list');
+                objectivesList.querySelectorAll('button').forEach(button => button.style.display = 'inline-block');
+                objectivesList.querySelectorAll('div').forEach(div => div.innerHTML = '');
+            })
+            .catch(error => console.error('Errore durante il caricamento:', error));
+        }
 
         function dataURItoBlob(dataURI) {
             const byteString = atob(dataURI.split(',')[1]);
